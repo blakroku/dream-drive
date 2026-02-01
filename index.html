@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dream &amp; Drive Sweepstakes - Check Winners</title>
+    <title>Global Sweepstakes - Check Winners</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -12,6 +13,7 @@
         body {
             font-family: 'Inter', sans-serif;
         }
+        [x-cloak] { display: none !important; }
     </style>
     <script>
         tailwind.config = {
@@ -31,19 +33,431 @@
         }
     </script>
 </head>
-<body class="bg-background text-foreground tracking-wide" id="ribbonCanvas">
+<body class="bg-background text-foreground tracking-wide" id="ribbonCanvas" x-data="{ aboutModal: false, rulesModal: false, privacyModal: false }">
     <canvas id="celebrationCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1000;"></canvas>
-    <!-- <canvas id="ribbonCanvas"></canvas> -->
+    
+    <!-- About Modal -->
+    <div x-show="aboutModal" 
+         x-cloak
+         @keydown.escape.window="aboutModal = false"
+         class="fixed inset-0 z-[9999] overflow-y-auto" 
+         aria-labelledby="modal-title" 
+         role="dialog" 
+         aria-modal="true">
+        <!-- Backdrop -->
+        <div x-show="aboutModal"
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="fixed inset-0 bg-black bg-opacity-75 transition-opacity"
+             @click="aboutModal = false"></div>
+
+        <!-- Modal Content -->
+        <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+            <div x-show="aboutModal"
+                 x-transition:enter="ease-out duration-300"
+                 x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                 x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                 x-transition:leave="ease-in duration-200"
+                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                 class="relative transform overflow-hidden rounded-3xl bg-background border border-border text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl">
+                
+                <!-- Close Button -->
+                <button @click="aboutModal = false" 
+                        class="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 6l-12 12M6 6l12 12"/>
+                    </svg>
+                </button>
+
+                <div class="px-8 py-8">
+                    <!-- Header -->
+                    <div class="text-center mb-8">
+                        <div class="text-3xl font-bold mb-2">About Global Sweepstakes</div>
+                        <div class="w-20 h-1 bg-white mx-auto rounded-full"></div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="space-y-6 text-muted-foreground">
+                        <div>
+                            <h3 class="text-xl font-semibold text-foreground mb-3">Our Mission</h3>
+                            <p class="leading-relaxed">
+                                Global Sweepstakes was founded with a simple mission, to make dreams come true. We believe everyone deserves a chance to win life changing prizes, and we're committed to running fair, transparent, and exciting sweepstakes that give our participants real opportunities to transform their lives.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 class="text-xl font-semibold text-foreground mb-3">What We Do</h3>
+                            <p class="leading-relaxed mb-3">
+                                We organize yearly sweepstakes featuring incredible prizes including luxury vehicles, cash awards, and once in a lifetime experiences. Every sweepstakes is conducted with complete transparency and verified by independent third-party auditors to ensure fairness.
+                            </p>
+                            <ul class="space-y-2 ml-4">
+                                <li class="flex items-start gap-2">
+                                    <span class="text-white mt-1">✓</span>
+                                    <span>Over $5 million in prizes awarded since 2020</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-white mt-1">✓</span>
+                                    <span>100% verified winners with public announcements</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-white mt-1">✓</span>
+                                    <span>Independent third-party auditing for all draws</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-white mt-1">✓</span>
+                                    <span>No purchase necessary to enter</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h3 class="text-xl font-semibold text-foreground mb-3">Our Commitment</h3>
+                            <p class="leading-relaxed">
+                                We are committed to operating with the highest standards of integrity and transparency. All our sweepstakes comply with federal and state regulations, and we work with certified auditors to ensure every draw is conducted fairly. Your trust is our most valuable asset.
+                            </p>
+                        </div>
+
+                        <div>
+                            Email: contact@gsweepstakes.com
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="bg-muted px-8 py-4 flex justify-end">
+                    <button @click="aboutModal = false" 
+                            class="px-6 py-2 bg-white text-black rounded-full font-medium hover:bg-white/90 transition-colors">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Official Rules Modal -->
+    <div x-show="rulesModal" 
+         x-cloak
+         @keydown.escape.window="rulesModal = false"
+         class="fixed inset-0 z-[9999] overflow-y-auto" 
+         aria-labelledby="modal-title" 
+         role="dialog" 
+         aria-modal="true">
+        <!-- Backdrop -->
+        <div x-show="rulesModal"
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="fixed inset-0 bg-black bg-opacity-75 transition-opacity"
+             @click="rulesModal = false"></div>
+
+        <!-- Modal Content -->
+        <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+            <div x-show="rulesModal"
+                 x-transition:enter="ease-out duration-300"
+                 x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                 x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                 x-transition:leave="ease-in duration-200"
+                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                 class="relative transform overflow-hidden rounded-3xl bg-background border border-border text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-3xl max-h-[90vh] overflow-y-auto">
+                
+                <!-- Close Button -->
+                <button @click="rulesModal = false" 
+                        class="sticky top-4 right-4 float-right text-muted-foreground hover:text-foreground transition-colors z-10">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 6l-12 12M6 6l12 12"/>
+                    </svg>
+                </button>
+
+                <div class="px-8 py-8">
+                    <!-- Header -->
+                    <div class="text-center mb-8">
+                        <div class="text-3xl font-bold mb-2">Official Rules</div>
+                        <div class="w-20 h-1 bg-white mx-auto rounded-full"></div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="space-y-6 text-muted-foreground text-sm">
+                       
+                        <div>
+                            <h3 class="text-lg font-semibold text-foreground mb-3">1. ELIGIBILITY</h3>
+                            <p class="leading-relaxed mb-2">
+                                The Global Sweepstakes ("Sweepstakes") is open only to legal residents of the fifty (50) United States and the District of Columbia who are eighteen (18) years of age or older at the time of entry. Employees of Global Sweepstakes LLC, its parent companies, subsidiaries, affiliates, advertising and promotion agencies, and the immediate family members and/or those living in the same household of each are not eligible to participate.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-semibold text-foreground mb-3">2. TIMING</h3>
+                            <p class="leading-relaxed">
+                                The Sweepstakes begins on September 1, 2025 at 12:00:01 AM EST and ends on January 31, 2026 at 11:59:59 PM EST ("Sweepstakes Period"). All entries must be received during the Sweepstakes Period. The computer clock of Sponsor shall be the official timekeeper for this Sweepstakes.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-semibold text-foreground mb-3">3. HOW TO ENTER</h3>
+                            <p class="leading-relaxed mb-3">
+                                During the Sweepstakes Period, which runs annually from <strong>September 1 through January 31</strong>, users can be automatically entered into the Global Sweepstakes by shopping or using a service from any of our independent partners. There are approximately 1,200 participating sponsors across the country. No manual entry is required each qualifying transaction with a partner automatically generates an entry on your behalf.
+                            </p>
+                            <p class="leading-relaxed font-semibold text-foreground">
+                                NO PURCHASE NECESSARY: To enter without using a partner service, mail list of verified receipts numbers from indicating sponsor with your name, complete mailing address, phone number and email address to: Global Sweepstakes, P.O. Box 37245, Las Vegas, NV 89101. Limit one (1) entry per person per mail-in submission. Submission can also be done by emailing contact@gsweepstakes.com
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-semibold text-foreground mb-3">4. WINNER SELECTION & NOTIFICATION</h3>
+                            <p class="leading-relaxed mb-3">
+                                Ten (10) potential winners will be selected in a random drawing conducted on or about February 1, 2026 by an independent judging organization whose decisions are final and binding. Odds of winning depend on the number of eligible entries received.
+                            </p>
+                            <p class="leading-relaxed">
+                                Potential winners will be notified via email and phone within 48 hours of drawing. Winners must respond within 72 hours and complete all required affidavit and release documents within seven (7) days of notification or prize will be forfeited and awarded to an alternate winner.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-semibold text-foreground mb-3">5. GENERAL CONDITIONS</h3>
+                            <p class="leading-relaxed mb-2">
+                                By entering, participants agree to be bound by these Official Rules and the decisions of Sponsor. Sponsor reserves the right to disqualify any individual found to be tampering with the entry process or the operation of the Sweepstakes.
+                            </p>
+                            <p class="leading-relaxed mb-2">
+                                Winners will be required to execute an Affidavit of Eligibility, Liability Release, and where lawful, a Publicity Release. Failure to comply may result in disqualification and selection of an alternate winner.
+                            </p>
+                            <p class="leading-relaxed">
+                                Sponsor is not responsible for lost, late, incomplete, invalid, unintelligible, or misdirected entries, which will be disqualified.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-semibold text-foreground mb-3">6. LIMITATIONS OF LIABILITY</h3>
+                            <p class="leading-relaxed">
+                                By participating, entrants agree to release and hold harmless Sponsor and its respective parents, subsidiaries, affiliates, directors, officers, employees, and agents from any and all liability for any injuries, loss, or damage of any kind arising from or in connection with the Sweepstakes or acceptance of any prize.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-semibold text-foreground mb-3">7. DISPUTES</h3>
+                            <p class="leading-relaxed">
+                                Except where prohibited, by entering, participants agree that any and all disputes, claims and causes of action arising out of or connected with this Sweepstakes shall be resolved individually, without resort to any form of class action, and exclusively by the appropriate court located in Nevada. All issues and questions shall be governed by the laws of Nevada.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-semibold text-foreground mb-3">8. WINNER LIST</h3>
+                            <p class="leading-relaxed">
+                                For a list of winners, send a self-addressed stamped envelope to: Dream & Drive Winners List, P.O. Box 37245, Las Vegas, NV 89101. Requests must be received by March 31, 2026.
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="bg-muted px-8 py-4 flex justify-end sticky bottom-0">
+                    <button @click="rulesModal = false" 
+                            class="px-6 py-2 bg-white text-black rounded-full font-medium hover:bg-white/90 transition-colors">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Policy Modal -->
+    <div x-show="privacyModal" 
+         x-cloak
+         @keydown.escape.window="privacyModal = false"
+         class="fixed inset-0 z-[9999] overflow-y-auto" 
+         aria-labelledby="modal-title" 
+         role="dialog" 
+         aria-modal="true">
+        <!-- Backdrop -->
+        <div x-show="privacyModal"
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="fixed inset-0 bg-black bg-opacity-75 transition-opacity"
+             @click="privacyModal = false"></div>
+
+        <!-- Modal Content -->
+        <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+            <div x-show="privacyModal"
+                 x-transition:enter="ease-out duration-300"
+                 x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                 x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                 x-transition:leave="ease-in duration-200"
+                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                 class="relative transform overflow-hidden rounded-3xl bg-background border border-border text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-3xl max-h-[90vh] overflow-y-auto">
+                
+                <!-- Close Button -->
+                <button @click="privacyModal = false" 
+                        class="sticky top-4 right-4 float-right text-muted-foreground hover:text-foreground transition-colors z-10">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 6l-12 12M6 6l12 12"/>
+                    </svg>
+                </button>
+
+                <div class="px-8 py-8">
+                    <!-- Header -->
+                    <div class="text-center mb-8">
+                        <div class="text-3xl font-bold mb-2">Privacy Policy</div>
+                        <div class="w-20 h-1 bg-white mx-auto rounded-full"></div>
+                        <p class="text-xs text-muted-foreground mt-4">Last Updated: January 1, 2026</p>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="space-y-6 text-muted-foreground text-sm">
+                        <div>
+                            <p class="leading-relaxed">
+                                Global Sweepstakes LLC ("we," "us," or "our") respects your privacy and is committed to protecting your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you participate in our sweepstakes.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-semibold text-foreground mb-3">1. INFORMATION WE COLLECT</h3>
+                            <p class="leading-relaxed mb-3">
+                                We collect information that you provide directly to sponsors when you enter our sweepstakes, including:
+                            </p>
+                            <ul class="space-y-2 ml-6 list-disc">
+                                <li>Personal identifiers (name, email address, phone number)</li>
+                                <li>Entry information and preferences</li>
+                                <li>Communication preferences</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-semibold text-foreground mb-3">2. HOW WE USE YOUR INFORMATION</h3>
+                            <p class="leading-relaxed mb-3">
+                                We use the information we collect to:
+                            </p>
+                            <ul class="space-y-2 ml-6 list-disc">
+                                <li>Administer the sweepstakes and verify eligibility</li>
+                                <li>Notify winners and arrange prize delivery</li>
+                                <li>Comply with legal obligations and official rules</li>
+                                <li>Send promotional communications (with your consent)</li>
+                                <li>Improve our services and user experience</li>
+                                <li>Prevent fraud and protect security</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-semibold text-foreground mb-3">3. INFORMATION SHARING</h3>
+                            <p class="leading-relaxed mb-3">
+                                We may share your information with:
+                            </p>
+                            <ul class="space-y-2 ml-6 list-disc">
+                                <li><strong class="text-foreground">Service Providers:</strong> Third-party vendors who assist in sweepstakes administration, prize fulfillment, and marketing</li>
+                                <li><strong class="text-foreground">Business Transfers:</strong> In connection with a merger, sale, or transfer of assets</li>
+                                <li><strong class="text-foreground">Public Winners List:</strong> Winner names and locations may be published as required by law (we check if you apply)</li>
+                            </ul>
+                            <p class="leading-relaxed mt-3">
+                                We do not sell your personal information to third parties.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-semibold text-foreground mb-3">4. DATA SECURITY</h3>
+                            <p class="leading-relaxed">
+                                We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. However, no method of transmission over the internet or electronic storage is 100% secure, and we cannot guarantee absolute security.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-semibold text-foreground mb-3">5. DATA RETENTION</h3>
+                            <p class="leading-relaxed">
+                                We retain your personal information for as long as necessary to fulfill the purposes outlined in this Privacy Policy, comply with legal obligations, resolve disputes, and enforce our agreements. Entry information is typically retained for one year after the sweepstakes conclusion.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-semibold text-foreground mb-3">6. YOUR RIGHTS AND CHOICES</h3>
+                            <p class="leading-relaxed mb-3">
+                                Depending on your location, you may have certain rights regarding your personal information:
+                            </p>
+                            <ul class="space-y-2 ml-6 list-disc">
+                                <li>Access and receive a copy of your personal information</li>
+                                <li>Correct inaccurate or incomplete information</li>
+                                <li>Request deletion of your information</li>
+                                <li>Opt-out of marketing communications</li>
+                                <li>Object to or restrict certain processing activities</li>
+                            </ul>
+                            <p class="leading-relaxed mt-3">
+                                To exercise these rights, please contact us at contact@gsweepstakes.com.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-semibold text-foreground mb-3">7. COOKIES AND TRACKING</h3>
+                            <p class="leading-relaxed">
+                                Our website uses cookies and similar tracking technologies to enhance user experience, analyze site usage, and assist in our marketing efforts. You can control cookies through your browser settings, though some features may not function properly if cookies are disabled.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-semibold text-foreground mb-3">8. CHILDREN'S PRIVACY</h3>
+                            <p class="leading-relaxed">
+                                Our sweepstakes is not intended for children under 18. We do not knowingly collect personal information from children. If we learn we have collected information from a child under 18, we will delete it promptly.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-semibold text-foreground mb-3">9. CALIFORNIA PRIVACY RIGHTS</h3>
+                            <p class="leading-relaxed">
+                                California residents have additional rights under the California Consumer Privacy Act (CCPA), including the right to know what personal information is collected, the right to delete personal information, and the right to opt-out of the sale of personal information. We do not sell personal information.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-semibold text-foreground mb-3">10. CHANGES TO THIS POLICY</h3>
+                            <p class="leading-relaxed">
+                                We may update this Privacy Policy from time to time. We will notify you of any material changes by posting the new policy on our website and updating the "Last Updated" date. Your continued participation after such changes constitutes acceptance of the updated policy.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-semibold text-foreground mb-3">11. CONTACT US</h3>
+                            <p class="leading-relaxed mb-3">
+                                If you have questions or concerns about this Privacy Policy or our data practices, please contact us:
+                            </p>
+                            <div class="bg-muted border border-border rounded-2xl p-6">
+                                <p><strong class="text-foreground">Global Sweepstakes LLC</strong></p>
+                                <p>Privacy Department</p>
+                                <p>372 Winners Circle</p>
+                                <p>Las Vegas, NV 89101</p>
+                                <p>Email: contact@gsweepstakes.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="bg-muted px-8 py-4 flex justify-end sticky bottom-0">
+                    <button @click="privacyModal = false" 
+                            class="px-6 py-2 bg-white text-black rounded-full font-medium hover:bg-white/90 transition-colors">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Navigation -->
     <nav class="fixed top-0 w-full bg-background/80 backdrop-blur-md z-50 border-b border-border">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <div class="text-xl font-bold tracking-tight">DREAM &amp; DRIVE</div>
+                <div class="text-xl font-bold tracking-tight">Global Sweepstakes</div>
                 <div class="flex gap-6 items-center uppercase text-sm">
                     <a href="#winners" class="hidden sm:inline-block md:inline-block lg:inline-block text-muted-foreground hover:text-foreground transition-colors font-light">
-                        <!-- <span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-users"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 7a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /><path d="M21 21v-2a4 4 0 0 0 -3 -3.85" /></svg>
-                        </span> -->
                         <span>Past Winners</span>
                     </a>
                     <a href="#search" class="px-4 py-3 bg-white text-black rounded-full text-sm tracking-wide font-black hover:bg-white/90 transition-colors flex items-center gap-1">
@@ -69,7 +483,7 @@
                         <span>DRAW COMPLETED - JANUARY 2026</span>
                     </div>
                     <h1 class="text-5xl lg:text-7xl font-bold leading-tight mb-6">Check the Winners!</h1>
-                    <p class="text-lg text-muted-foreground mb-8">The January 2026 Dream &amp; Drive Sweepstakes has concluded. Over $1,000,000 in prizes awarded to 10 lucky winners. Enter your details below to see if you won!</p>
+                    <p class="text-lg text-muted-foreground mb-8">The January 2026 Global Sweepstakes has concluded. Over $1,000,000 in prizes awarded to 10 lucky winners. Enter your details below to see if you won!</p>
                     <div class="flex flex-col sm:flex-row gap-4">
                         <a href="#search" class="px-6 py-3 bg-white text-black rounded-full font-black hover:bg-white/90 transition-colors text-center flex items-center gap-1">
                             <span>
@@ -137,7 +551,7 @@
                             <p class="text-yellow-400 font-semibold mb-2">2024 Ford F-150 Raptor + $100,000 Cash</p>
                             <p class="text-sm text-muted-foreground mb-6">Entry #DD-2024-45782 • Houston, TX</p>
                             <div class="bg-yellow-600 rounded-md p-6 text-sm italic text-black">
-                                "I couldn't believe it when I got the call! This is absolutely life changing. Thank you Dream Drive!"
+                                "I couldn't believe it when I got the call! This is absolutely life changing. Thank you Global Sweepstakes!"
                             </div>
                         </div>
                     </div>
@@ -188,7 +602,7 @@
                             <p class="text-gray-300 font-light mb-2">2023 Mercedes-Benz GLE + $50,000</p>
                             <p class="text-sm text-muted-foreground mb-6">Entry #DD-2024-19847 • Miami, FL</p>
                             <div class="bg-black/30 rounded-md p-6 text-sm italic">
-                                "This is the best day of my life! Thank you so much Dream Drive!"
+                                "This is the best day of my life! Thank you so much Global Sweepstakes!"
                             </div>
                         </div>
                     </div>
@@ -328,7 +742,7 @@
                             type="text" 
                             id="searchEmail" 
                             name="searchEmail" 
-                            placeholder="DD-2025-12345"
+                            placeholder="DD-2025-37245"
                             class="w-full px-4 py-3 bg-background border border-border rounded-full text-foreground focus:outline-none focus:ring-1 focus:ring-white"
                             required
                         >
@@ -375,16 +789,15 @@
     <footer class="bg-background border-t border-border py-32">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
-                <div class="text-xl font-bold mb-4">DREAM &amp; DRIVE</div>
+                <div class="text-xl font-bold mb-4">Global Sweepstakes</div>
                 <div class="flex justify-center gap-6 mb-6 text-sm text-muted-foreground flex-wrap">
-                    <a href="#" class="hover:text-foreground transition-colors">About</a>
+                    <a href="#" @click.prevent="aboutModal = true" class="hover:text-foreground transition-colors cursor-pointer">About</a>
                     <a href="#winners" class="hover:text-foreground transition-colors">Winners</a>
-                    <a href="#" class="hover:text-foreground transition-colors">Official Rules</a>
-                    <a href="#" class="hover:text-foreground transition-colors">Privacy Policy</a>
-                    <a href="#" class="hover:text-foreground transition-colors">Contact</a>
+                    <a href="#" @click.prevent="rulesModal = true" class="hover:text-foreground transition-colors cursor-pointer">Official Rules</a>
+                    <a href="#" @click.prevent="privacyModal = true" class="hover:text-foreground transition-colors cursor-pointer">Privacy Policy</a>
                 </div>
                 <p class="text-sm text-muted-foreground">
-                    © 2026 Dream &amp; Drive Sweepstakes. All rights reserved.<br>
+                    © 2026 Global Sweepstakes. All rights reserved.<br>
                     No purchase necessary. Void where prohibited. Must be 18+ to enter. January 2026 draw concluded.
                 </p>
             </div>
@@ -426,93 +839,93 @@
         });
     </script>
 
-<script>
-const canvas = document.getElementById('celebrationCanvas');
-const ctx = canvas.getContext('2d');
-let W = canvas.width = window.innerWidth;
-let H = canvas.height = window.innerHeight;
+    <script>
+        const canvas = document.getElementById('celebrationCanvas');
+        const ctx = canvas.getContext('2d');
+        let W = canvas.width = window.innerWidth;
+        let H = canvas.height = window.innerHeight;
 
-window.addEventListener('resize', () => {
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-});
+        window.addEventListener('resize', () => {
+            W = canvas.width = window.innerWidth;
+            H = canvas.height = window.innerHeight;
+        });
 
-const ribbons = [];
-const balloons = [];
-const ribbonColors = ['#ff004c','#ffad00','#14f195','#00cfff','#ff2dff'];
-const balloonColors = ['#ff004c','#ffad00','#14f195','#00cfff','#ff2dff'];
+        const ribbons = [];
+        const balloons = [];
+        const ribbonColors = ['#ff004c','#ffad00','#14f195','#00cfff','#ff2dff'];
+        const balloonColors = ['#ff004c','#ffad00','#14f195','#00cfff','#ff2dff'];
 
-function random(min,max){return Math.random()*(max-min)+min;}
+        function random(min,max){return Math.random()*(max-min)+min;}
 
-class Ribbon {
-    constructor(){
-        this.reset();
-    }
-    reset(){
-        this.x = random(0,W);
-        this.y = random(-H,0);
-        this.width = random(5,15);
-        this.height = random(20,50);
-        this.speed = random(1,3);
-        this.angle = random(0,Math.PI*2);
-        this.rotationSpeed = random(0.01,0.05);
-        this.color = ribbonColors[Math.floor(Math.random()*ribbonColors.length)];
-    }
-    update(){
-        this.y += this.speed;
-        this.angle += this.rotationSpeed;
-        if(this.y>H)this.reset();
-    }
-    draw(ctx){
-        ctx.save();
-        ctx.translate(this.x,this.y);
-        ctx.rotate(Math.sin(this.angle));
-        ctx.fillStyle = this.color;
-        ctx.fillRect(-this.width/2,-this.height/2,this.width,this.height);
-        ctx.restore();
-    }
-}
+        class Ribbon {
+            constructor(){
+                this.reset();
+            }
+            reset(){
+                this.x = random(0,W);
+                this.y = random(-H,0);
+                this.width = random(5,15);
+                this.height = random(20,50);
+                this.speed = random(1,3);
+                this.angle = random(0,Math.PI*2);
+                this.rotationSpeed = random(0.01,0.05);
+                this.color = ribbonColors[Math.floor(Math.random()*ribbonColors.length)];
+            }
+            update(){
+                this.y += this.speed;
+                this.angle += this.rotationSpeed;
+                if(this.y>H)this.reset();
+            }
+            draw(ctx){
+                ctx.save();
+                ctx.translate(this.x,this.y);
+                ctx.rotate(Math.sin(this.angle));
+                ctx.fillStyle = this.color;
+                ctx.fillRect(-this.width/2,-this.height/2,this.width,this.height);
+                ctx.restore();
+            }
+        }
 
-class Balloon {
-    constructor(){
-        this.reset();
-    }
-    reset(){
-        this.x = random(0,W);
-        this.y = random(-H,0);
-        this.radius = random(10,25);
-        this.speed = random(1,2.5);
-        this.color = balloonColors[Math.floor(Math.random()*balloonColors.length)];
-    }
-    update(){
-        this.y += this.speed;
-        if(this.y>H)this.reset();
-    }
-    draw(ctx){
-        ctx.beginPath();
-        ctx.fillStyle = this.color;
-        ctx.ellipse(this.x,this.y,this.radius,this.radius*1.2,0,0,Math.PI*2);
-        ctx.fill();
-        ctx.beginPath();
-        ctx.strokeStyle = this.color;
-        ctx.moveTo(this.x,this.y+this.radius*1.2);
-        ctx.lineTo(this.x,this.y+this.radius*1.2+15);
-        ctx.stroke();
-    }
-}
+        class Balloon {
+            constructor(){
+                this.reset();
+            }
+            reset(){
+                this.x = random(0,W);
+                this.y = random(-H,0);
+                this.radius = random(10,25);
+                this.speed = random(1,2.5);
+                this.color = balloonColors[Math.floor(Math.random()*balloonColors.length)];
+            }
+            update(){
+                this.y += this.speed;
+                if(this.y>H)this.reset();
+            }
+            draw(ctx){
+                ctx.beginPath();
+                ctx.fillStyle = this.color;
+                ctx.ellipse(this.x,this.y,this.radius,this.radius*1.2,0,0,Math.PI*2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.strokeStyle = this.color;
+                ctx.moveTo(this.x,this.y+this.radius*1.2);
+                ctx.lineTo(this.x,this.y+this.radius*1.2+15);
+                ctx.stroke();
+            }
+        }
 
-// create objects
-for(let i=0;i<50;i++) ribbons.push(new Ribbon());
-for(let i=0;i<30;i++) balloons.push(new Balloon());
+        // create objects
+        for(let i=0;i<50;i++) ribbons.push(new Ribbon());
+        for(let i=0;i<30;i++) balloons.push(new Balloon());
 
-// animation loop
-function animate(){
-    ctx.clearRect(0,0,W,H);
-    ribbons.forEach(r => { r.update(); r.draw(ctx); });
-    balloons.forEach(b => { b.update(); b.draw(ctx); });
-    requestAnimationFrame(animate);
-}
-animate();
-</script>
+        // animation loop
+        function animate(){
+            ctx.clearRect(0,0,W,H);
+            ribbons.forEach(r => { r.update(); r.draw(ctx); });
+            balloons.forEach(b => { b.update(); b.draw(ctx); });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
 </body>
 </html>
